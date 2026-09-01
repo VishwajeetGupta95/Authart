@@ -11,6 +11,8 @@ node_modules/
 # Build / dist
 dist/
 build/
+/public/
+/public /
 **/dist/
 **/build/
 
