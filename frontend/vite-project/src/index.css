@@ -55,11 +55,10 @@ body {
 }
 
 #root {
-  width: 1126px;
+  width: 100%;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -125,4 +124,5 @@ code {
 .pipeline { margin-top:30px; }.pipeline-step { padding:16px; border:1px solid rgba(255,255,255,.09); border-radius:12px; background:rgba(255,255,255,.02); }.pipeline-step.current { border-color:rgba(168,85,247,.45); }.pipeline-step b,.pipeline-step small { display:block; }.pipeline-step b { color:#fff; font-size:13px; }.pipeline-step small { color:rgba(255,255,255,.45); margin-top:5px; font-size:11px; }.pipeline-line { height:24px; width:1px; background:rgba(168,85,247,.35); margin-left:25px; }
 .collection { max-width:1180px; margin:22px auto 0; }.collection-head { margin-bottom:20px; }.collection-head h2 { color:#fff; margin:0 0 4px; }.empty { padding:35px; text-align:center; color:rgba(255,255,255,.4); border:1px dashed rgba(255,255,255,.1); border-radius:12px; }.art-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }.art-card { overflow:hidden; border:1px solid rgba(255,255,255,.08); border-radius:12px; background:#100c20; }.art-card img { width:100%; aspect-ratio:1; object-fit:cover; display:block; }.art-card div { padding:12px; }.art-card h3 { margin:0 0 6px; font-size:14px; color:#fff; }.art-card span { font-size:9px; color:#c084fc; letter-spacing:1px; }.placeholder,.profile-form { max-width:700px; margin:40px auto; }.big-number { display:block; color:#a855f7; font-size:13px; font-weight:800; margin-bottom:8px; }
 @media (max-width:800px) { .dashboard { padding:90px 20px 50px; }.dashboard-head { display:block; }.dashboard-head h1 { font-size:38px; }.identity { margin-top:20px; }.dashboard-grid { grid-template-columns:1fr; }.art-grid { grid-template-columns:repeat(2,1fr); }.dashboard-tabs { overflow:auto; } }
+@media (max-width:550px) { .dashboard { padding:80px 14px 40px; }.dashboard-head h1 { font-size:28px; }.dashboard-tabs button { padding:10px 12px; font-size:12px; }.art-grid { grid-template-columns:1fr; }.panel { padding:20px 16px; border-radius:14px; }.identity { min-width:unset; width:100%; box-sizing:border-box; }.primary-btn { width:100%; box-sizing:border-box; text-align:center; } }
 .dashboard-nav { position:fixed; top:0; left:0; right:0; height:68px; display:flex; align-items:center; justify-content:space-between; padding:0 48px; box-sizing:border-box; background:rgba(11,8,21,.88); backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,.08); z-index:50; }.dashboard-nav strong { font-size:22px; background:linear-gradient(90deg,#a855f7,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }.dashboard-nav span { color:rgba(255,255,255,.55); font-size:12px; }.dashboard-nav button { color:#fff; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:8px 13px; cursor:pointer; font-size:11px; font-weight:700; }@media(max-width:800px){.dashboard-nav{padding:0 20px}.dashboard-nav span{display:none}}

@@ -37,8 +37,44 @@ async function api(path, options = {}) {
   return data;
 }
 
+export const METAMASK_PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=io.metamask";
+export const METAMASK_APP_STORE_URL = "https://apps.apple.com/app/metamask/id1438144202";
+
+export function getMobileOS() {
+  if (typeof window === "undefined" || !navigator) return null;
+  const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
+  if (/android/i.test(ua)) return "android";
+  if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+  return null;
+}
+
+export function isMobileDevice() {
+  return getMobileOS() !== null;
+}
+
+export function getMetaMaskDeepLink(url) {
+  const target = url || (typeof window !== "undefined" ? window.location.href : "");
+  const cleanTarget = target.replace(/^https?:\/\//i, "");
+  return `https://metamask.app.link/dapp/${cleanTarget}`;
+}
+
+export function redirectToMetaMaskOrStore() {
+  if (typeof window === "undefined") return;
+  const deepLink = getMetaMaskDeepLink();
+  // Open MetaMask Mobile Universal Link:
+  // If installed, launches MetaMask in-app browser.
+  // If not installed, automatically navigates to Play Store (Android) or App Store (iOS).
+  window.location.href = deepLink;
+}
+
 export async function authenticateWallet() {
-  if (!window.ethereum) throw new Error("MetaMask is not installed.");
+  if (!window.ethereum) {
+    if (isMobileDevice()) {
+      redirectToMetaMaskOrStore();
+      throw new Error("Redirecting to MetaMask Mobile app...");
+    }
+    throw new Error("MetaMask is not installed. Please install the MetaMask extension.");
+  }
 
   const provider = new BrowserProvider(window.ethereum);
   await provider.send("eth_requestAccounts", []);

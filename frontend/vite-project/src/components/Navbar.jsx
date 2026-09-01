@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { authenticateWallet, getStoredUser, logout, restoreSession } from "../services/auth";
+import {
+  authenticateWallet,
+  getStoredUser,
+  logout,
+  restoreSession,
+  isMobileDevice,
+  redirectToMetaMaskOrStore,
+} from "../services/auth";
+import MobileWalletModal from "./MobileWalletModal";
 
 function shortAddress(address) {
   return address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "CONNECT WALLET";
@@ -9,6 +17,7 @@ function Navbar({ onAuthenticated }) {
   const [user, setUser] = useState(getStoredUser());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showMobileModal, setShowMobileModal] = useState(false);
 
   useEffect(() => {
     restoreSession().then(setUser);
@@ -25,13 +34,22 @@ function Navbar({ onAuthenticated }) {
 
   const connectWallet = async () => {
     setError("");
+    if (!window.ethereum && isMobileDevice()) {
+      setShowMobileModal(true);
+      redirectToMetaMaskOrStore();
+      return;
+    }
     setLoading(true);
     try {
       const result = await authenticateWallet();
       setUser(result.user);
       onAuthenticated?.();
     } catch (err) {
-      setError(err.message || "Wallet authentication failed.");
+      if (isMobileDevice() && !window.ethereum) {
+        setShowMobileModal(true);
+      } else {
+        setError(err.message || "Wallet authentication failed.");
+      }
     } finally {
       setLoading(false);
     }
@@ -66,6 +84,7 @@ function Navbar({ onAuthenticated }) {
           {error}
         </div>
       )}
+      <MobileWalletModal isOpen={showMobileModal} onClose={() => setShowMobileModal(false)} />
     </>
   );
 }
