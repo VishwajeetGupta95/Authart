@@ -1,0 +1,221 @@
+﻿node.exe : 
+[1m[33mWarning:[39m[22m 
+This declaration shadows an 
+existing declaration.
+At C:\Program 
+Files\nodejs\npx.ps1:29 
+char:3
++   & $NODE_EXE $NPX_CLI_JS 
+$args
++   ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo          
+    : NotSpecified: ([1m  
+  [33mWarnin...ng declara   
+ tion.:String) [], Remot    
+eException
+    + FullyQualifiedErrorId 
+    : NativeCommandError
+ 
+  --> contracts/AuthArt1155.
+sol:14:47:
+   |
+14 |     function 
+mint(address to, uint256 
+amount, string calldata 
+uri) external onlyOwner 
+returns (uint256 id) {
+   |                        
+                       
+^^^^^^^^^^^^^^^^^^^
+Note: The shadowed 
+declaration is here:
+  --> contracts/AuthArt1155.
+sol:20:5:
+   |
+20 |     function 
+uri(uint256 id) public view 
+override returns (string 
+memory) { return _uris[id]; 
+}
+   |     ^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:402:13:
+    |
+402 |             
+mcopy(add(result, 0x20), 
+add(add(array, 0x20), 
+mul(start, 0x20)), 
+mul(sub(end, start), 0x20))
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:432:13:
+    |
+432 |             
+mcopy(add(result, 0x20), 
+add(add(array, 0x20), 
+mul(start, 0x20)), 
+mul(sub(end, start), 0x20))
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:462:13:
+    |
+462 |             
+mcopy(add(result, 0x20), 
+add(add(array, 0x20), 
+mul(start, 0x20)), 
+mul(sub(end, start), 0x20))
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:492:13:
+    |
+492 |             
+mcopy(add(array, 0x20), 
+add(add(array, 0x20), 
+mul(start, 0x20)), 
+mul(sub(end, start), 0x20))
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:540:13:
+    |
+540 |             mcopy(
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:574:13:
+    |
+574 |             
+mcopy(add(array, 0x20), 
+add(add(array, 0x20), 
+mul(start, 0x20)), 
+mul(sub(end, start), 0x20))
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:622:13:
+    |
+622 |             mcopy(
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:656:13:
+    |
+656 |             
+mcopy(add(array, 0x20), 
+add(add(array, 0x20), 
+mul(start, 0x20)), 
+mul(sub(end, start), 0x20))
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Arrays.sol:704:13:
+    |
+704 |             mcopy(
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+  --> @openzeppelin/contract
+s/utils/Bytes.sol:94:13:
+   |
+94 |             
+mcopy(add(result, 0x20), 
+add(add(buffer, 0x20), 
+start), sub(end, start))
+   |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Bytes.sol:124:13:
+    |
+124 |             
+mcopy(add(buffer, 0x20), 
+add(add(buffer, 0x20), 
+start), sub(end, start))
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Bytes.sol:168:13:
+    |
+168 |             
+mcopy(add(add(buffer, 
+0x20), pos), 
+add(add(replacement, 0x20), 
+offset), length)
+    |             ^^^^^
+
+
+[1m[31mDeclarationError:[
+39m[22m Function "mcopy" 
+not found.
+   --> @openzeppelin/contrac
+ts/utils/Bytes.sol:195:17:
+    |
+195 |                 
+mcopy(add(result, offset), 
+add(input, 0x20), 
+mload(input))
+    |                 ^^^^^
+
+
+
+[31m[1mError[22m[39m 
+[31m[1mHH600:[22m[39m 
+Compilation failed
+For more info go to https://
+v2.hardhat.org/HH600 or run 
+Hardhat with 
+--show-stack-traces

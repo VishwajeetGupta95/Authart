@@ -1,0 +1,12 @@
+{
+  "name": "DARK KNIGHT",
+  "description": "IT RISES IN DAWN",
+  "image": "/uploads/1788239508694-fa73d24a-9620-4c25-8c50-43b8885ce654.jpeg",
+  "creator": "did:pkh:eip155:1:0xaadf4f8918a0eb462518fa11c62fd204183f6e49",
+  "attributes": [
+    {
+      "trait_type": "AI originality",
+      "value": 1
+    }
+  ]
+}

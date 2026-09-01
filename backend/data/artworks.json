@@ -1,0 +1,104 @@
+[
+  {
+    "id": "b3bb05d4-dd10-4c75-8f6c-ff5120aa5882",
+    "title": "DARK KNIGHT",
+    "description": "IT RISES IN DAWN",
+    "originalName": "WhatsApp Image 2026-08-21 at 9.52.22 AM.jpeg",
+    "filename": "1788239508694-fa73d24a-9620-4c25-8c50-43b8885ce654.jpeg",
+    "mimeType": "image/jpeg",
+    "size": 68326,
+    "ownerAddress": "0xaadF4F8918a0EB462518fA11C62fD204183f6e49",
+    "did": "did:pkh:eip155:1:0xaadf4f8918a0eb462518fa11c62fd204183f6e49",
+    "status": "minted",
+    "aiStatus": "passed",
+    "createdAt": "2026-09-01T05:11:48.705Z",
+    "aiResult": {
+      "original": true,
+      "similarityScore": 0.12,
+      "styleFingerprintScore": 0.3,
+      "originalityScore": 1,
+      "fraudAlert": false,
+      "model": "AuthArt AI adapter (CLIP/CNN-ready)",
+      "sha256": "23ed8c9ed11477a953339ae405cb204a0b9e0dc0e27b001a9737f455ad488b75",
+      "pricePrediction": {
+        "suggestedEth": 1.88,
+        "confidence": 0.72
+      }
+    },
+    "mint": {
+      "tokenId": "1788239518884",
+      "network": "Local Demo Chain",
+      "contractAddress": "demo-contract",
+      "metadataUri": "local://metadata/b3bb05d4-dd10-4c75-8f6c-ff5120aa5882",
+      "royaltyBps": 500
+    }
+  },
+  {
+    "id": "2b9a8a42-e510-44d0-880b-50bc37136653",
+    "title": "M,",
+    "description": "MMMMM",
+    "originalName": "WhatsApp Image 2026-08-21 at 10.00.20 AM.jpeg",
+    "filename": "1788239463239-341c6f95-73e0-48d8-9567-361039cd0191.jpeg",
+    "mimeType": "image/jpeg",
+    "size": 39131,
+    "ownerAddress": "0xaadF4F8918a0EB462518fA11C62fD204183f6e49",
+    "did": "did:pkh:eip155:1:0xaadf4f8918a0eb462518fa11c62fd204183f6e49",
+    "status": "minted",
+    "aiStatus": "passed",
+    "createdAt": "2026-09-01T05:11:03.242Z",
+    "aiResult": {
+      "original": true,
+      "similarityScore": 0.492,
+      "styleFingerprintScore": 0.375,
+      "originalityScore": 1,
+      "fraudAlert": false,
+      "model": "AuthArt AI adapter (CLIP/CNN-ready)",
+      "sha256": "327d2bed31efd95e942a7837cc32211bb020950ad40f89c9ac4c8b8777ebcbe7",
+      "pricePrediction": {
+        "suggestedEth": 1.88,
+        "confidence": 0.72
+      }
+    },
+    "mint": {
+      "tokenId": "1788239474247",
+      "network": "Local Demo Chain",
+      "contractAddress": "demo-contract",
+      "metadataUri": "local://metadata/2b9a8a42-e510-44d0-880b-50bc37136653",
+      "royaltyBps": 500
+    }
+  },
+  {
+    "id": "8b44a10b-f64b-46ae-8512-9db766178f40",
+    "title": "DARK KNIGHT",
+    "description": "IT RISES IN THE DAWN",
+    "originalName": "WhatsApp Image 2026-08-21 at 9.52.22 AM.jpeg",
+    "filename": "1788239374941-f82709a3-80d7-430f-8923-a2135c000142.jpeg",
+    "mimeType": "image/jpeg",
+    "size": 68326,
+    "ownerAddress": "0xaadF4F8918a0EB462518fA11C62fD204183f6e49",
+    "did": "did:pkh:eip155:1:0xaadf4f8918a0eb462518fa11c62fd204183f6e49",
+    "status": "minted",
+    "aiStatus": "passed",
+    "createdAt": "2026-09-01T05:09:34.958Z",
+    "aiResult": {
+      "original": true,
+      "similarityScore": 0.12,
+      "styleFingerprintScore": 0.3,
+      "originalityScore": 1,
+      "fraudAlert": false,
+      "model": "AuthArt AI adapter (CLIP/CNN-ready)",
+      "sha256": "23ed8c9ed11477a953339ae405cb204a0b9e0dc0e27b001a9737f455ad488b75",
+      "pricePrediction": {
+        "suggestedEth": 1.88,
+        "confidence": 0.72
+      }
+    },
+    "mint": {
+      "tokenId": "1788239383062",
+      "network": "Local Demo Chain",
+      "contractAddress": "demo-contract",
+      "metadataUri": "local://metadata/8b44a10b-f64b-46ae-8512-9db766178f40",
+      "royaltyBps": 500
+    }
+  }
+]

@@ -1,0 +1,37 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Environment variables
+.env
+**/.env
+.env.local
+.env.*.local
+
+# Build / dist
+dist/
+build/
+**/dist/
+**/build/
+
+# Hardhat
+smart-contracts/artifacts/
+smart-contracts/cache/
+smart-contracts/typechain/
+smart-contracts/typechain-types/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Coverage / test output
+coverage/

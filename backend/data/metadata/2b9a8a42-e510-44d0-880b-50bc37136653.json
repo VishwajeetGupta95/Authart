@@ -1,0 +1,12 @@
+{
+  "name": "M,",
+  "description": "MMMMM",
+  "image": "/uploads/1788239463239-341c6f95-73e0-48d8-9567-361039cd0191.jpeg",
+  "creator": "did:pkh:eip155:1:0xaadf4f8918a0eb462518fa11c62fd204183f6e49",
+  "attributes": [
+    {
+      "trait_type": "AI originality",
+      "value": 1
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "authart-smart-contracts",
+  "version": "1.0.0",
+  "scripts": {
+    "compile": "hardhat compile",
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@openzeppelin/contracts": "^4.9.6",
+    "@types/node": "^22.19.17",
+    "hardhat": "^2.26.3",
+    "typescript": "~5.8.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
