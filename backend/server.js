@@ -9,15 +9,28 @@ const artworkRoutes = require('./routes/artwork');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN;
 const JWT_SECRET = process.env.JWT_SECRET || 'authart-dev-secret-change-me';
 const NONCE_TTL_MS = 5 * 60 * 1000;
 const JWT_TTL_SECONDS = 24 * 60 * 60;
 
-app.use(cors({ origin: FRONTEND_ORIGIN, credentials: true }));
+app.use(cors({
+  origin: (origin, callback) => {
+    // Reflect any origin to allow Vercel previews (*.vercel.app), localhost, and custom domains
+    callback(null, true);
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/metadata', express.static(path.join(__dirname, 'data', 'metadata')));
+
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', service: 'AuthArt Backend API', time: new Date().toISOString() });
+});
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 const dataDir = path.join(__dirname, 'data');
 const usersFile = path.join(dataDir, 'users.json');

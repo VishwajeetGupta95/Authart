@@ -1,6 +1,14 @@
 import { BrowserProvider } from "ethers";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+function resolveApiUrl() {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return "http://localhost:5000/api";
+  let clean = envUrl.trim().replace(/\/+$/, "");
+  if (!clean.endsWith("/api")) clean = `${clean}/api`;
+  return clean;
+}
+
+export const API_URL = resolveApiUrl();
 const TOKEN_KEY = "authart_jwt";
 const USER_KEY = "authart_user";
 
@@ -11,10 +19,19 @@ export function getStoredUser() {
 export function logout() { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); }
 
 async function api(path, options = {}) {
-  const response = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
-  });
+  const url = `${API_URL}${path}`;
+  let response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    });
+  } catch (err) {
+    if (url.includes("localhost")) {
+      throw new Error(`Cannot reach backend: frontend is trying to connect to '${url}'. Please add the VITE_API_URL environment variable to your Vercel project with your deployed backend URL.`);
+    }
+    throw new Error(`Cannot reach backend at '${url}'. Please verify your backend service is running and CORS is enabled. (${err.message})`);
+  }
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(data.error || "Request failed");
   return data;
