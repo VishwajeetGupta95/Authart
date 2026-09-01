@@ -107,7 +107,8 @@ app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'AuthArt backend' });
 });
 
-app.post('/api/auth/nonce', (req, res) => {
+// Route alias helper: support both with and without /api prefix
+app.post(['/api/auth/nonce', '/auth/nonce'], (req, res) => {
   try {
     const address = getAddress(req.body?.address || '');
     const nonce = crypto.randomBytes(32).toString('hex');
@@ -133,7 +134,7 @@ app.post('/api/auth/nonce', (req, res) => {
   }
 });
 
-app.post('/api/auth/verify', (req, res) => {
+app.post(['/api/auth/verify', '/auth/verify'], (req, res) => {
   try {
     const requestedAddress = getAddress(req.body?.address || '');
     const signature = req.body?.signature;
@@ -188,9 +189,9 @@ app.post('/api/auth/verify', (req, res) => {
   }
 });
 
-app.use('/api/artworks', authMiddleware, artworkRoutes);
+app.use(['/api/artworks', '/artworks'], authMiddleware, artworkRoutes);
 
-app.get('/api/auth/me', authMiddleware, (req, res) => {
+app.get(['/api/auth/me', '/auth/me'], authMiddleware, (req, res) => {
   const users = loadUsers();
   const user = users[String(req.user.address).toLowerCase()];
   if (!user) return res.status(404).json({ error: 'User not found' });
