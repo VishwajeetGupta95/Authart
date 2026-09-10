@@ -37,3 +37,20 @@ Thumbs.db
 
 # Coverage / test output
 coverage/
+
+# Python & AI Engine
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+ai-engine/venv/
+ai-engine/.venv/
+# ChromaDB Vector Database
+.chroma/
+**/.chroma/
+chroma_db/
+ai-engine/chroma_db/
+*.parquet
+*.sqlite3
