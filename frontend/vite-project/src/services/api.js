@@ -22,7 +22,24 @@ async function request(path, options = {}) {
 }
 
 export function getApiUrl() { return API_URL; }
-export function getMyArtworks(){return request('/artworks');}
-export function uploadArtwork(fd){return request('/artworks/upload',{method:'POST',body:fd});}
-export function analyzeArtwork(id){return request(`/artworks/${id}/analyze`,{method:'POST'});}
-export function mintArtwork(id){return request(`/artworks/${id}/mint`,{method:'POST'});}
+export function getMyArtworks() { return request('/artworks'); }
+export function uploadArtwork(fd) { return request('/artworks/upload', { method: 'POST', body: fd }); }
+export function analyzeArtwork(id) { return request(`/artworks/${id}/analyze`, { method: 'POST' }); }
+export function mintArtwork(id) { return request(`/artworks/${id}/mint`, { method: 'POST' }); }
+
+// Marketplace Endpoints
+export function getMarketplaceListings() { return request('/marketplace/listings'); }
+export function listArtworkOnMarketplace(artworkId, priceEth) {
+  return request('/marketplace/list', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ artworkId, priceEth }),
+  });
+}
+export function buyMarketplaceListing(listingId) {
+  return request('/marketplace/buy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ listingId }),
+  });
+}
