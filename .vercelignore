@@ -1,0 +1,21 @@
+# Documentation & roadmaps
+doc/
+doc/**
+
+# Python AI Engine microservice
+#ai-engine/
+#ai-engine/**
+
+# Smart Contracts & Hardhat development
+#smart-contracts/
+#smart-contracts/**
+
+# Node.js backend (if deployed separately, e.g. on Render/Railway/Fly.io)
+#backend/
+#backend/**
+
+# Git & Editor files
+#.git/
+#.vscode/
+#.idea/
+#*.log
