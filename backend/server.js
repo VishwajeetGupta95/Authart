@@ -1,11 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { recoverAddress, hashMessage, getAddress } = require('ethers');
+const { connectDB } = require('./services/db');
+const { upsertUser, getUser } = require('./services/storage');
 const artworkRoutes = require('./routes/artwork');
+const marketplaceRoutes = require('./routes/marketplace');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,9 +16,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'authart-dev-secret-change-me';
 const NONCE_TTL_MS = 5 * 60 * 1000;
 const JWT_TTL_SECONDS = 24 * 60 * 60;
 
+// Initialize MongoDB Connection (with local fallback)
+connectDB();
+
 app.use(cors({
   origin: (origin, callback) => {
-    // Reflect any origin to allow Vercel previews (*.vercel.app), localhost, and custom domains
     callback(null, true);
   },
   credentials: true,
@@ -32,26 +36,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-const dataDir = path.join(__dirname, 'data');
-const usersFile = path.join(dataDir, 'users.json');
 const nonces = new Map();
-
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-if (!fs.existsSync(usersFile)) fs.writeFileSync(usersFile, '{}');
-
-function loadUsers() {
-  try {
-    return JSON.parse(fs.readFileSync(usersFile, 'utf8'));
-  } catch {
-    return {};
-  }
-}
-
-function saveUsers(users) {
-  const temp = `${usersFile}.tmp`;
-  fs.writeFileSync(temp, JSON.stringify(users, null, 2));
-  fs.renameSync(temp, usersFile);
-}
 
 function base64url(value) {
   return Buffer.from(value).toString('base64url');
@@ -103,11 +88,6 @@ function cleanupNonces() {
 
 setInterval(cleanupNonces, 60 * 1000).unref();
 
-app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, service: 'AuthArt backend' });
-});
-
-// Route alias helper: support both with and without /api prefix
 app.post(['/api/auth/nonce', '/auth/nonce'], (req, res) => {
   try {
     const address = getAddress(req.body?.address || '');
@@ -134,7 +114,7 @@ app.post(['/api/auth/nonce', '/auth/nonce'], (req, res) => {
   }
 });
 
-app.post(['/api/auth/verify', '/auth/verify'], (req, res) => {
+app.post(['/api/auth/verify', '/auth/verify'], async (req, res) => {
   try {
     const requestedAddress = getAddress(req.body?.address || '');
     const signature = req.body?.signature;
@@ -152,26 +132,12 @@ app.post(['/api/auth/verify', '/auth/verify'], (req, res) => {
       return res.status(401).json({ error: 'Signature verification failed' });
     }
 
-    // A nonce is one-time use. This prevents replaying a valid signature.
+    // A nonce is one-time use
     nonces.delete(requestedAddress.toLowerCase());
 
-    const users = loadUsers();
-    const key = requestedAddress.toLowerCase();
-    const isNewUser = !users[key];
+    const did = `did:pkh:eip155:1:${requestedAddress.toLowerCase()}`;
+    const { user, isNewUser } = await upsertUser(requestedAddress, did);
 
-    if (isNewUser) {
-      users[key] = {
-        address: requestedAddress,
-        did: `did:pkh:eip155:1:${requestedAddress.toLowerCase()}`,
-        createdAt: new Date().toISOString(),
-        lastLoginAt: new Date().toISOString(),
-      };
-    } else {
-      users[key].lastLoginAt = new Date().toISOString();
-    }
-    saveUsers(users);
-
-    const user = users[key];
     const token = signJwt({
       sub: user.did,
       address: user.address,
@@ -190,10 +156,10 @@ app.post(['/api/auth/verify', '/auth/verify'], (req, res) => {
 });
 
 app.use(['/api/artworks', '/artworks'], authMiddleware, artworkRoutes);
+app.use(['/api/marketplace', '/marketplace'], authMiddleware, marketplaceRoutes);
 
-app.get(['/api/auth/me', '/auth/me'], authMiddleware, (req, res) => {
-  const users = loadUsers();
-  const user = users[String(req.user.address).toLowerCase()];
+app.get(['/api/auth/me', '/auth/me'], authMiddleware, async (req, res) => {
+  const user = await getUser(req.user.address);
   if (!user) return res.status(404).json({ error: 'User not found' });
   res.json({ authenticated: true, user });
 });
