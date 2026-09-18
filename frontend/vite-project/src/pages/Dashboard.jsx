@@ -13,6 +13,16 @@ import {
 
 const tabs = ['Upload Artwork', 'Marketplace', 'Edit Profile'];
 
+function getArtworkImageUrl(artwork) {
+  if (artwork?.imageGatewayUrl) return artwork.imageGatewayUrl;
+  if (artwork?.imageUri?.startsWith('ipfs://')) {
+    return `https://gateway.pinata.cloud/ipfs/${artwork.imageUri.slice(7)}`;
+  }
+  if (!artwork?.filename) return '';
+  const backendUrl = getApiUrl().replace(/\/api\/?$/, '');
+  return `${backendUrl}/uploads/${encodeURIComponent(artwork.filename)}`;
+}
+
 function Dashboard({ onLogout }) {
   const [active, setActive] = useState('Upload Artwork');
   const [user] = useState(getStoredUser());
@@ -269,7 +279,7 @@ function Dashboard({ onLogout }) {
                 {artworks.map((x) => (
                   <article className="art-card" key={x.id}>
                     <img
-                      src={`${getApiUrl().replace('/api', '')}/uploads/${x.filename}`}
+                      src={getArtworkImageUrl(x)}
                       alt={x.title}
                     />
                     <div>
@@ -294,6 +304,11 @@ function Dashboard({ onLogout }) {
                           Originality {Math.round(x.aiResult.originalityScore * 100)}% · Est.{' '}
                           {x.aiResult.pricePrediction?.suggestedEth || '-'} ETH
                         </small>
+                      )}
+                      {x.metadataGatewayUrl && (
+                        <a className="metadata-link" href={x.metadataGatewayUrl} target="_blank" rel="noreferrer">
+                          VIEW IPFS METADATA
+                        </a>
                       )}
                       <div className="card-actions">
                         {x.aiStatus === 'pending' && (
@@ -388,10 +403,17 @@ function Dashboard({ onLogout }) {
                   {visibleListings.map((l) => (
                 <article className="art-card" key={l.id}>
                   {l.artwork?.filename && (
-                    <img
-                      src={`${getApiUrl().replace('/api', '')}/uploads/${l.artwork.filename}`}
-                      alt={l.artwork?.title}
-                    />
+                    <>
+                      <img
+                        src={getArtworkImageUrl(l.artwork)}
+                        alt={l.artwork?.title}
+                        onError={(event) => {
+                          event.currentTarget.hidden = true;
+                          event.currentTarget.nextElementSibling.hidden = false;
+                        }}
+                      />
+                      <span className="image-fallback" hidden>Artwork image unavailable</span>
+                    </>
                   )}
                   <div>
                     <h3>{l.artwork?.title || 'NFT Artwork'}</h3>
@@ -403,6 +425,11 @@ function Dashboard({ onLogout }) {
                       <small className="originality-tag">
                         AI Originality: {Math.round(l.artwork.aiResult.originalityScore * 100)}%
                       </small>
+                    )}
+                    {l.artwork?.metadataGatewayUrl && (
+                      <a className="metadata-link" href={l.artwork.metadataGatewayUrl} target="_blank" rel="noreferrer">
+                        VIEW IPFS METADATA
+                      </a>
                     )}
                     <div className="card-actions">
                       {l.sellerAddress.toLowerCase() === user?.address?.toLowerCase() ? (
