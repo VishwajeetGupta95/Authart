@@ -5,6 +5,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { analyzeArtwork, bootstrapArtwork } = require('../services/ai');
 const { mintIfConfigured } = require('../services/blockchain');
+const { pinFile, pinJson, getGatewayUrl } = require('../services/ipfs');
 const { getUserArtworks, getArtworkById, createArtwork, updateArtwork } = require('../services/storage');
 
 const router = express.Router();
@@ -39,12 +40,30 @@ router.post('/upload', upload.single('artwork'), async (req, res) => {
     return res.status(400).json({ error: 'Artwork title is required.' });
   }
 
+  let image = {};
+  if (process.env.PINATA_JWT) {
+    try {
+      image = await pinFile(req.file.path, {
+        name: req.file.originalname,
+        contentType: req.file.mimetype,
+        keyvalues: { source: 'authart-artwork' },
+      });
+      image.gatewayUrl = getGatewayUrl(image.uri);
+    } catch (err) {
+      fs.unlinkSync(req.file.path);
+      return res.status(502).json({ error: `Artwork storage failed: ${err.message}` });
+    }
+  }
+
   const item = {
     id: crypto.randomUUID(),
     title,
     description: String(req.body.description || '').trim(),
     originalName: req.file.originalname,
     filename: req.file.filename,
+    imageCid: image.cid || null,
+    imageUri: image.uri || null,
+    imageGatewayUrl: image.gatewayUrl || null,
     mimeType: req.file.mimetype,
     size: req.file.size,
     ownerAddress: req.user.address.toLowerCase(),
@@ -96,7 +115,7 @@ router.post('/:id/mint', async (req, res) => {
     const metadata = {
       name: artwork.title,
       description: artwork.description,
-      image: `/uploads/${artwork.filename}`,
+      image: artwork.imageUri || `/uploads/${artwork.filename}`,
       creator: artwork.did,
       attributes: [
         { trait_type: 'AI Originality Score', value: artwork.aiResult.originalityScore },
@@ -106,7 +125,20 @@ router.post('/:id/mint', async (req, res) => {
     };
 
     fs.writeFileSync(path.join(metadataDir, `${artwork.id}.json`), JSON.stringify(metadata, null, 2));
-    const metadataUri = `local://metadata/${artwork.id}`;
+    let metadataUri = `local://metadata/${artwork.id}`;
+    let metadataFields = {};
+    if (process.env.PINATA_JWT) {
+      const pinnedMetadata = await pinJson(metadata, {
+        name: `${artwork.id}.json`,
+        keyvalues: { source: 'authart-metadata', artworkId: artwork.id },
+      });
+      metadataUri = pinnedMetadata.uri;
+      metadataFields = {
+        metadataCid: pinnedMetadata.cid,
+        metadataUri: pinnedMetadata.uri,
+        metadataGatewayUrl: getGatewayUrl(pinnedMetadata.uri),
+      };
+    }
 
     // Execute minting
     const chain = await mintIfConfigured({ ownerAddress: artwork.ownerAddress, metadataUri, royaltyBps: 500 });
@@ -129,6 +161,7 @@ router.post('/:id/mint', async (req, res) => {
     const updated = await updateArtwork(artwork.id, {
       status: 'minted',
       mint: mintResult,
+      ...metadataFields,
     });
 
     res.json({ artwork: updated, mint: mintResult });

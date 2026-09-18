@@ -15,6 +15,11 @@ const marketplaceAbi = [
   'function reputation(address user) external view returns (uint256)',
 ];
 
+function createProvider(rpcUrl) {
+  // Avoid repeated network discovery retries when the optional local chain is stopped.
+  return new ethers.JsonRpcProvider(rpcUrl, undefined, { staticNetwork: true });
+}
+
 /**
  * Executes on-chain minting on the configured EVM chain (Hardhat/Sepolia).
  * Falls back to demo receipt if RPC/contract variables are unset or unreachable.
@@ -29,7 +34,7 @@ async function mintIfConfigured({ ownerAddress, metadataUri, royaltyBps = 500 })
   }
 
   try {
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const provider = createProvider(rpcUrl);
     const signer = new ethers.Wallet(privateKey, provider);
     const contract = new ethers.Contract(contractAddress, nftAbi, signer);
 
@@ -63,7 +68,7 @@ async function getCreatorReputation(address) {
   if (!rpcUrl || !marketplaceAddress) return 0;
 
   try {
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const provider = createProvider(rpcUrl);
     const contract = new ethers.Contract(marketplaceAddress, marketplaceAbi, provider);
     const rep = await contract.reputation(address);
     return Number(rep);
